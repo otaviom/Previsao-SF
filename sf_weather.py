@@ -2,6 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
 import pandas  as pds
+from sqlite3 import connect
 
 page = requests.get("http://forecast.weather.gov/MapClick.php?lat=37.7772&lon=-122.4168")
 soup = BeautifulSoup(page.content,"html.parser")
@@ -23,11 +24,16 @@ weather=pds.DataFrame({
     "tempe": temps, 
     "descr":descs})
 
-temp_nums=weather["temp"].str.extract("(?P<temp_num>\d+)", expand=False)
+temp_nums=weather["tempe"].str.extract("(?P<temp_num>\d+)", expand=False)
 weather["temp_num"]=temp_nums.astype("int")
 
 temp_cel=[(tmp-32)/1.8 for tmp in weather["temp_num"]]
 temp_cel
 weather["temp_cel"]=temp_cel
+
+print(weather)
+
+db_conn = connect("sf_weather.sqlite")
+weather.to_sql("semana", con=db_conn, if_exists="replace", index=False)
 
 weather.to_excel("sf_weather.xlsx")
