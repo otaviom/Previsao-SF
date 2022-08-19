@@ -20,8 +20,8 @@ descs = [d["title"] for d in seven_day.select(".tombstone-container img")]
 weather=pds.DataFrame({
     "period":periods,
     "short_desc": short_descs, 
-    "temp": temps, 
-    "desc":descs})
+    "tempe": temps, 
+    "descr":descs})
 
 temp_nums=weather["temp"].str.extract("(?P<temp_num>\d+)", expand=False)
 weather["temp_num"]=temp_nums.astype("int")
@@ -29,5 +29,5 @@ weather["temp_num"]=temp_nums.astype("int")
 temp_cel=[(tmp-32)/1.8 for tmp in weather["temp_num"]]
 temp_cel
 weather["temp_cel"]=temp_cel
-print(weather)
-#weather.to_excel("sf_weather.xlsx")
+
+weather.to_excel("sf_weather.xlsx")
