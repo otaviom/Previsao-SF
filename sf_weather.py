@@ -29,5 +29,5 @@ weather["temp_num"]=temp_nums.astype("int")
 temp_cel=[(tmp-32)/1.8 for tmp in weather["temp_num"]]
 temp_cel
 weather["temp_cel"]=temp_cel
-
-weather.to_excel("sf_weather.xlsx")
+print(weather)
+#weather.to_excel("sf_weather.xlsx")
